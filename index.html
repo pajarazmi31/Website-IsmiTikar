@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f4ed">
+  <meta name="description"
+    content="Ismi Tikar — pengrajin tikar dan keset anyaman khas Tasikmalaya. Menerima pesanan satuan maupun partai besar.">
+  <title>Ismi Tikar — Anyaman yang Menemani Rumah</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#f7f4ed', ink: '#25271f', moss: '#526044',
+            clay: '#b86f4b', sand: '#e8dfcf', olive: '#788363'
+          },
+          fontFamily: {
+            display: ['Georgia', 'Times New Roman', 'serif'],
+            sans: ['Arial', 'Helvetica', 'sans-serif']
+          },
+          boxShadow: { soft: '0 18px 50px rgba(37,39,31,.09)' }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    body {
+      background: #f7f4ed;
+      color: #25271f;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: #526044;
+      color: #fff;
+    }
+
+    .grain {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+    }
+
+    /* --- ANIMASI SCROLL INTERAKTIF --- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px) scale(0.96);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .delay-1 { transition-delay: .12s; }
+    .delay-2 { transition-delay: .24s; }
+    .delay-3 { transition-delay: .36s; }
+
+    /* --- ANIMASI CONTINUOUS (TERUS BERJALAN) --- */
+    
+    /* 1. Background slow zoom & pan continuous */
+    @keyframes slowZoom {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06) rotate(0.5deg); }
+      100% { transform: scale(1); }
+    }
+    .hero-bg-animated {
+      animation: slowZoom 20s ease-in-out infinite;
+    }
+
+    /* 2. Floating continuous (lembut & bervariasi) */
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0) rotate(3deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    .float {
+      animation: floatSoft 5s ease-in-out infinite;
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(-6deg); }
+      50% { transform: translateY(-12px) rotate(-4deg); }
+    }
+    .float-slow {
+      animation: floatSlow 7s ease-in-out infinite;
+    }
+
+    /* 3. Pulse continuous untuk badge "Dari Tasik" & tombol WA */
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(184, 111, 75, 0.4); }
+      50% { transform: scale(1.06); box-shadow: 0 0 20px 8px rgba(184, 111, 75, 0); }
+    }
+    .pulse-badge {
+      animation: pulseGlow 3.5s ease-in-out infinite;
+    }
+
+    /* 4. Soft Spin / Breathing continuous pada elemen lingkaran dekoratif */
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-slow {
+      animation: spinSlow 35s linear infinite;
+    }
+
+    /* 5. Shimmer effect berulang untuk badge WhatsApp */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .shimmer-badge {
+      background: linear-gradient(90deg, rgba(82,96,68,0.1) 0%, rgba(82,96,68,0.3) 50%, rgba(82,96,68,0.1) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+
+    /* Marquee Track Continuous */
+    .marquee-track {
+      animation: marquee 24s linear infinite;
+    }
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    /* Product card 3D tilt & Image scale */
+    .product-card {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+      will-change: transform;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 35px rgba(37,39,31,.12);
+    }
+    .product-card img {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 100%;
+      height: 1px;
+      background: #526044;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal, .reveal-left, .reveal-right {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+  <div id="scrollProgress" class="fixed left-0 top-0 z-[70] h-[3px] w-0 bg-clay transition-all duration-150"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-ink/10 bg-paper/90 backdrop-blur-xl transition-all duration-300">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
+      <a href="#beranda" class="group flex items-center gap-3" aria-label="Ismi Tikar, ke beranda">
+        <img src="assets/logo.png" alt="Ismi Tikar"
+          class="grid h-10 w-10 place-items-center rounded-full transition-transform duration-500 group-hover:rotate-[360deg]">
+        <span><span class="block font-display text-xl font-bold leading-none tracking-tight">ismi tikar</span><span
+            class="mt-1 block text-[9px] uppercase tracking-[.24em] text-ink/55">Anyaman Tasikmalaya</span></span>
+      </a>
+      <nav class="hidden items-center gap-8 text-sm md:flex" aria-label="Navigasi utama">
+        <a class="nav-link" href="#tentang">Cerita Kami</a>
+        <a class="nav-link" href="#produk">Produk</a>
+        <a class="nav-link" href="#pemesanan">Pemesanan</a>
+        <a class="nav-link" href="#alamat">Lokasi</a>
+      </nav>
+      <a href="#pemesanan"
+        class="hidden items-center gap-2 rounded-full bg-ink px-5 py-3 text-sm text-white transition-all duration-300 hover:bg-moss hover:shadow-lg sm:inline-flex">
+        Pesan sekarang <span aria-hidden="true" class="transition-transform group-hover:translate-x-1">↗</span>
+      </a>
+      <button id="menuButton" class="grid h-10 w-10 place-items-center rounded-full border border-ink/15 md:hidden"
+        aria-label="Buka menu" aria-expanded="false">
+        <svg id="menuIcon" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+    <nav id="mobileMenu" class="hidden border-t border-ink/10 bg-paper px-5 py-4 md:hidden" aria-label="Navigasi mobile">
+      <div class="flex flex-col gap-1 text-sm">
+        <a class="rounded-lg px-3 py-3 hover:bg-sand" href="#tentang">Cerita Kami</a>
+        <a class="rounded-lg px-3 py-3 hover:bg-sand" href="#produk">Produk</a>
+        <a class="rounded-lg px-3 py-3 hover:bg-sand" href="#pemesanan">Pemesanan</a>
+        <a class="rounded-lg px-3 py-3 hover:bg-sand" href="#alamat">Lokasi</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="beranda" class="relative overflow-hidden">
+      <!-- Background Image dengan Smooth Continuous Animation & Parallax Scroll -->
+      <div class="parallax-bg absolute inset-0 z-0 bg-cover bg-center bg-no-repeat hero-bg-animated"
+        style="background-image: url('assets/background.jpg');"></div>
+      
+      <!-- Overlay Background -->
+      <div class="absolute inset-0 z-[1] bg-paper/60 backdrop-blur-[2px]"></div>
+
+      <!-- Floating Decorative Elements dengan Spin Slow -->
+      <div
+        class="spin-slow pointer-events-none absolute -right-24 top-12 z-[2] h-72 w-72 rounded-full border border-dashed border-moss/20 md:h-[30rem] md:w-[30rem]">
+      </div>
+      <div
+        class="spin-slow pointer-events-none absolute -right-12 top-28 z-[2] h-56 w-56 rounded-full border border-moss/15 md:h-[24rem] md:w-[24rem]" style="animation-direction: reverse;">
+      </div>
+
+      <div
+        class="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 pb-16 pt-12 md:grid-cols-[1.02fr_.98fr] md:px-8 md:pb-24 md:pt-20">
+        
+        <!-- Text Content -->
+        <div class="reveal-left">
+          <h1
+            class="max-w-2xl font-display text-[3.3rem] leading-[.99] tracking-[-.055em] sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+            Anyaman yang<br><span class="italic text-moss inline-block transition-transform hover:scale-105 duration-300">menemani</span><br>rumah.
+          </h1>
+          <p class="mt-7 max-w-md text-base leading-7 text-ink/65 md:text-lg md:leading-8">
+            Keset dan tikar anyaman buatan pengrajin lokal. Sederhana, fungsional, dan dibuat untuk menemani keseharian.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <a href="#produk"
+              class="group inline-flex items-center gap-3 rounded-full bg-moss px-6 py-4 text-sm font-medium text-white transition-all duration-300 hover:bg-ink hover:shadow-lg">
+              Lihat produk <span class="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            <a href="#tentang" class="rounded-full px-5 py-4 text-sm font-medium transition hover:bg-sand">Kenali Ismi
+              Tikar <span>↘</span></a>
+          </div>
+          <div class="mt-12 flex items-center gap-4 border-t border-ink/10 pt-6">
+            <div class="flex -space-x-2">
+              <span class="grid h-9 w-9 place-items-center rounded-full border-2 border-paper bg-sand text-sm animate-pulse">✳</span>
+              <span
+                class="grid h-9 w-9 place-items-center rounded-full border-2 border-paper bg-[#d7c5a7] text-sm animate-pulse" style="animation-delay: 0.3s">⌁</span>
+              <span
+                class="grid h-9 w-9 place-items-center rounded-full border-2 border-paper bg-[#b9c1a8] text-sm animate-pulse" style="animation-delay: 0.6s">✳</span>
+            </div>
+            <p class="text-xs leading-5 text-ink/60">Dikerjakan dengan teliti<br><span
+                class="font-semibold text-ink">oleh pengrajin lokal</span></p>
+          </div>
+        </div>
+
+        <!-- Photo & Badges -->
+        <div class="hero-photo reveal-right relative mx-auto w-full max-w-[550px]">
+          <div
+            class="float-slow absolute -left-4 top-12 z-20 hidden rounded-sm bg-[#e9c7a9] px-4 py-3 font-display text-sm italic shadow-soft sm:block">
+            Dibuat dengan ketekunan</div>
+          
+          <div class="relative aspect-[4/5] overflow-hidden rounded-t-[48%] rounded-b-[5px] bg-sand shadow-2xl transition-transform duration-700 hover:scale-[1.01]">
+            <img src="assets/keset-anyam.jpeg" alt="Keset anyaman warna magenta dan krem buatan Ismi Tikar"
+              class="h-full w-full object-cover object-center" fetchpriority="high">
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
+              <div>
+                <p class="text-[10px] uppercase tracking-[.2em] text-white/75">Karya pilihan</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="float absolute -bottom-6 -left-3 z-20 hidden w-36 overflow-hidden border-[6px] border-paper bg-paper shadow-soft sm:block md:-left-8 md:w-44">
+            <img src="assets/keset.jpeg" alt="Detail tekstur keset anyaman" class="h-28 w-full object-cover md:h-32">
+            <p class="px-2 py-2 text-center text-[10px] uppercase tracking-widest">Tekstur yang khas</p>
+          </div>
+
+          <span
+            class="pulse-badge absolute -right-2 top-8 z-20 grid h-16 w-16 place-items-center rounded-full bg-clay font-display text-xs italic leading-4 text-white sm:-right-5">Dari<br>Tasik</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="overflow-hidden border-y border-ink/10 bg-sand/60 py-4" aria-label="Layanan Ismi Tikar">
+      <div
+        class="marquee-track flex w-max items-center gap-8 whitespace-nowrap text-[10px] font-semibold uppercase tracking-[.22em] text-moss">
+        <span>Keset anyaman</span><span>✳</span><span>Tikar pilihan</span><span>✳</span><span>Pesanan eceran &
+          partai</span><span>✳</span><span>Pengrajin Tasikmalaya</span><span>✳</span>
+        <span>Keset anyaman</span><span>✳</span><span>Tikar pilihan</span><span>✳</span><span>Pesanan eceran &
+          partai</span><span>✳</span><span>Pengrajin Tasikmalaya</span><span>✳</span>
+      </div>
+    </div>
+
+    <!-- About -->
+    <section id="tentang" class="px-5 py-20 md:px-8 md:py-28">
+      <div class="mx-auto grid max-w-7xl gap-12 md:grid-cols-2 md:gap-20">
+        <div class="reveal-left">
+          <p class="mb-5 text-[10px] font-bold uppercase tracking-[.22em] text-clay">01 — Tentang Ismi Tikar</p>
+          <h2 class="max-w-xl font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">Benda
+            sederhana,<br><span class="italic text-moss">manfaat sehari-hari.</span></h2>
+        </div>
+        <div class="reveal-right delay-1 flex flex-col justify-end">
+          <p class="text-base leading-8 text-ink/70">Ismi Tikar merupakan usaha pengrajin keset dan tikar khas
+            Tasikmalaya. Kami menghadirkan produk anyaman yang berguna untuk kebutuhan rumah, dengan pilihan motif dan
+            warna yang beragam.</p>
+          <p class="mt-4 text-base leading-8 text-ink/70">Butuh untuk rumah sendiri, toko, atau dijual kembali? Kami
+            menerima pesanan dalam jumlah kecil maupun partai besar. Hubungi kami untuk mendiskusikan kebutuhan dan
+            ketersediaan produk.</p>
+          <div class="mt-8 grid grid-cols-2 gap-4 border-t border-ink/10 pt-6">
+            <div class="transition-transform duration-300 hover:translate-y-[-4px]">
+              <p class="font-display text-3xl text-moss">Lokal</p>
+              <p class="mt-1 text-xs text-ink/55">Dari pengrajin Tasikmalaya</p>
+            </div>
+            <div class="transition-transform duration-300 hover:translate-y-[-4px]">
+              <p class="font-display text-3xl text-moss">Fleksibel</p>
+              <p class="mt-1 text-xs text-ink/55">Eceran hingga partai besar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section id="produk" class="bg-[#eeeadf] px-5 py-20 md:px-8 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <div class="reveal flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p class="mb-5 text-[10px] font-bold uppercase tracking-[.22em] text-clay">02 — Produk kami</p>
+            <h2 class="font-display text-4xl tracking-tight sm:text-5xl md:text-6xl">Temukan anyaman<br><span
+                class="italic text-moss">favoritmu.</span></h2>
+          </div>
+          <p class="max-w-sm text-sm leading-7 text-ink/60">Setiap kebutuhan punya pilihan. Jelajahi koleksi anyaman berkualitas buatan pengrajin lokal dengan bahan yang nyaman dan tahan lama.</p>
+        </div>
+        <div id="productGrid" class="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          
+          <!-- Keset Kelin -->
+          <article class="product-card reveal overflow-hidden rounded-[3px] bg-paper shadow-sm" data-category="keset-kilen">
+            <div class="relative aspect-[4/4.2] overflow-hidden bg-[#d9d9d1]">
+              <img src="assets/keset-anyaman.jpeg" alt="Keset anyaman abu-abu dengan garis hitam, putih, dan cokelat" loading="lazy" class="h-full w-full object-cover">
+              <span class="absolute left-4 top-4 rounded-full bg-paper/90 px-3 py-1.5 text-[10px] uppercase tracking-wider backdrop-blur-sm">Keset Kelin</span>
+              <span class="absolute right-4 top-4 rounded-full bg-moss/90 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">Rp 9.000</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 p-5">
+              <div>
+                <h3 class="font-display text-2xl">Keset Kelin</h3>
+                <p class="mt-1 text-base font-semibold text-moss">Rp 9.000 <span class="text-xs font-normal text-ink/50">/ pcs</span></p>
+                <p class="mt-2 text-sm leading-6 text-ink/65">Keset kelin berukuran <strong>40 cm × 60 cm</strong>. Berdaya serap baik, tidak licin, serta menghadirkan sentuhan hangat untuk area teras dan pintu rumah.</p>
+              </div>
+              <button class="order-product grid h-10 w-10 shrink-0 place-items-center rounded-full border border-ink/15 transition-all duration-300 hover:bg-moss hover:text-white hover:rotate-45" data-product="Keset Kelin" aria-label="Pesan Keset Kelin">↗</button>
+            </div>
+          </article>
+
+          <!-- Tikar Motif -->
+          <article class="product-card reveal delay-1 overflow-hidden rounded-[3px] bg-paper shadow-sm" data-category="tikar">
+            <div class="relative aspect-[4/4.2] overflow-hidden bg-[#d9cbb4]">
+              <img src="assets/tikar-anyaman.jpeg" alt="Tikar anyaman bermotif magenta dan krem" loading="lazy" class="h-full w-full object-cover">
+              <span class="absolute left-4 top-4 rounded-full bg-paper/90 px-3 py-1.5 text-[10px] uppercase tracking-wider backdrop-blur-sm">Tikar</span>
+              <span class="absolute right-4 top-4 rounded-full bg-moss/90 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">Rp 75.000</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 p-5">
+              <div>
+                <h3 class="font-display text-2xl">Tikar Motif</h3>
+                <p class="mt-1 text-base font-semibold text-moss">Rp 75.000 <span class="text-xs font-normal text-ink/50">/ pcs</span></p>
+                <p class="mt-2 text-sm leading-6 text-ink/65">Tikar anyaman tradisional khas Tasikmalaya dengan jalinan yang rapat dan kokoh. Ringan, mudah digulung, serta nyaman digunakan untuk acara kumpul keluarga atau bersantai di rumah.</p>
+              </div>
+              <button class="order-product grid h-10 w-10 shrink-0 place-items-center rounded-full border border-ink/15 transition-all duration-300 hover:bg-moss hover:text-white hover:rotate-45" data-product="Tikar Motif" aria-label="Pesan Tikar Motif">↗</button>
+            </div>
+          </article>
+
+          <!-- Keset Rawis -->
+          <article class="product-card reveal delay-2 overflow-hidden rounded-[3px] bg-paper shadow-sm" data-category="keset-rawis">
+            <div class="relative aspect-[4/4.2] overflow-hidden bg-[#e3dfd4]">
+              <img src="assets/keset-rawis.jpeg" alt="Berbagai pilihan produk tikar dan keset Ismi Tikar" loading="lazy" class="h-full w-full object-cover object-bottom">
+              <span class="absolute left-4 top-4 rounded-full bg-paper/90 px-3 py-1.5 text-[10px] uppercase tracking-wider backdrop-blur-sm">Keset Rawis</span>
+              <span class="absolute right-4 top-4 rounded-full bg-moss/90 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">Rp 9.000</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 p-5">
+              <div>
+                <h3 class="font-display text-2xl">Keset Rawis</h3>
+                <p class="mt-1 text-base font-semibold text-moss">Rp 9.000 <span class="text-xs font-normal text-ink/50">/ pcs</span></p>
+                <p class="mt-2 text-sm leading-6 text-ink/65">Keset berukuran <strong>40 cm × 60 cm</strong> dengan aksen rumbai/rawis yang estetik. Kombinasi motif warna yang beragam, efektif menyerap air dan membersihkan alas kaki.</p>
+              </div>
+              <button class="order-product grid h-10 w-10 shrink-0 place-items-center rounded-full border border-ink/15 transition-all duration-300 hover:bg-moss hover:text-white hover:rotate-45" data-product="Keset Rawis" aria-label="Pesan Keset Rawis">↗</button>
+            </div>
+          </article>
+
+        </div>
+        <p class="mt-6 text-xs text-ink/50">*Harga eceran. Untuk pembelian grosir/partai besar, ukuran kustom, dan ketersediaan motif, silakan hubungi kami via WhatsApp.</p>
+      </div>
+    </section>
+
+    <!-- Order Section -->
+    <section id="pemesanan" class="relative overflow-hidden px-5 py-20 md:px-8 md:py-28">
+      <div class="spin-slow pointer-events-none absolute -left-28 bottom-0 h-72 w-72 rounded-full bg-sand/80 blur-3xl"></div>
+      <div class="relative mx-auto grid max-w-7xl gap-12 md:grid-cols-[.9fr_1.1fr] md:gap-20">
+        <div class="reveal-left">
+          <p class="mb-5 text-[10px] font-bold uppercase tracking-[.22em] text-clay">03 — Pemesanan</p>
+          <h2 class="font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">Punya
+            kebutuhan<br><span class="italic text-moss">khusus?</span></h2>
+          <p class="mt-6 max-w-md text-base leading-8 text-ink/65">Ceritakan produk yang kamu cari dan jumlah yang
+            dibutuhkan. Konsultasikan pesananmu langsung via WhatsApp dengan tim Ismi Tikar.</p>
+          <div class="mt-9 flex items-center gap-4 border-t border-ink/10 pt-6">
+            <span class="grid h-12 w-12 place-items-center rounded-full bg-[#dce2d2] text-xl text-moss animate-bounce">↗</span>
+            <div>
+              <p class="font-semibold">Pesanan eceran & partai besar</p>
+              <p class="mt-1 text-sm text-ink/55">Tanya harga dan ketersediaan secara langsung.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Contact Card -->
+        <div
+          class="reveal-right delay-1 flex flex-col justify-between rounded-sm border border-ink/10 bg-white/65 p-6 sm:p-10 backdrop-blur-sm shadow-soft hover:shadow-2xl transition-all duration-500">
+          <div>
+            <div class="mb-6 flex items-center justify-between border-b border-ink/10 pb-4">
+              <h3 class="font-display text-2xl">Hubungi Kami</h3>
+              <span class="text-[10px] uppercase tracking-[.18em] text-ink/40">Ismi Tikar</span>
+            </div>
+            <p class="text-sm leading-relaxed text-ink/70">
+              Siap memesan atau ingin tanya-tanya dulu seputar motif, ukuran, dan harga khusus partai besar? Hubungi
+              kami langsung melalui WhatsApp atau layanan pelanggan kami.
+            </p>
+
+            <div class="mt-8 space-y-4">
+              <div class="shimmer-badge flex items-center gap-4 rounded-sm border border-ink/10 p-4 transition-transform hover:translate-x-1 duration-300">
+                <span class="grid h-10 w-10 place-items-center rounded-full bg-moss text-white font-bold animate-pulse">WA</span>
+                <div>
+                  <p class="text-xs text-ink/50">WhatsApp Fast Response</p>
+                  <p class="font-semibold text-ink">+62 857-5929-4551</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <a href="https://wa.me/6285759294551?text=Halo%20Ismi%20Tikar,%20saya%20ingin%20tanya%20produk"
+              target="_blank" rel="noopener noreferrer"
+              class="group flex w-full items-center justify-between rounded-full bg-moss px-6 py-4 text-sm font-semibold text-white transition-all duration-300 hover:bg-ink hover:shadow-lg">
+              <span>Chat via WhatsApp Sekarang</span>
+              <span class="text-lg transition-transform group-hover:translate-x-2">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location -->
+    <section id="alamat" class="bg-moss px-5 py-20 text-paper md:px-8 md:py-24 relative overflow-hidden">
+      <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1fr_.8fr] md:items-end relative z-10">
+        <div class="reveal-left">
+          <p class="mb-5 text-[10px] font-bold uppercase tracking-[.22em] text-[#d6b59a]">04 — Alamat kami</p>
+          <h2 class="max-w-xl font-display text-4xl leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">Dibuat di
+            Tasik,<br><span class="italic text-[#d6cdb8]">untuk keseharian.</span></h2>
+          <p class="mt-6 max-w-lg text-sm leading-7 text-white/65">Kami berada di kawasan Sukajaya, Kecamatan Purbaratu,
+            Kota Tasikmalaya. Hubungi kami sebelum berkunjung untuk memastikan waktu dan ketersediaan produk.</p>
+        </div>
+        <div class="reveal-right delay-1 border-t border-white/20 pt-6 md:border-t-0 md:pt-0">
+          <div class="flex gap-4">
+            <span class="mt-1 text-xl text-[#d6b59a] animate-bounce">⌖</span>
+            <div>
+              <p class="text-[10px] uppercase tracking-[.2em] text-white/45">Alamat</p>
+              <p class="mt-2 text-base leading-7">Pasirjaya RT 03 RW 06,<br>Kelurahan Sukajaya, Kecamatan
+                Purbaratu,<br>Kota Tasikmalaya, Jawa Barat.</p>
+            </div>
+          </div>
+          <div class="mt-6 flex gap-4">
+            <a href="https://maps.app.goo.gl/HAxQBC1NtUTGtZAE8"
+              target="_blank" rel="noopener noreferrer"
+              class="mt-8 inline-flex items-center gap-3 rounded-full border border-white/30 px-5 py-3 text-sm transition-all duration-300 hover:bg-white hover:text-moss hover:shadow-xl">Cari
+              lokasi di Google Maps <span>↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-paper px-5 pb-8 pt-10 md:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <a href="#beranda" class="inline-flex items-center gap-3 group">
+          <img src="assets/logo.png" alt="Ismi Tikar"
+            class="grid h-10 w-10 place-items-center rounded-full transition-transform duration-500 group-hover:rotate-12">
+          <span class="font-display text-2xl font-bold">ismi tikar</span>
+        </a>
+        <p class="mt-3 max-w-sm text-sm leading-6 text-ink/55">Keset dan tikar anyaman dari pengrajin lokal Tasikmalaya.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-x-6 gap-y-3 text-xs text-ink/65">
+        <a class="nav-link transition hover:text-moss" href="#tentang">Tentang</a>
+        <a class="nav-link transition hover:text-moss" href="#produk">Produk</a>
+        <a class="nav-link transition hover:text-moss" href="#pemesanan">Pemesanan</a>
+        <a class="nav-link transition hover:text-moss" href="#alamat">Lokasi</a>
+        <a class="nav-link transition hover:text-moss" href="https://wa.me/6285759294551" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>
+      </div>
+    </div>
+    <div
+      class="mx-auto mt-8 flex max-w-7xl flex-col justify-between gap-2 border-t border-ink/10 pt-5 text-[10px] text-ink/45 sm:flex-row">
+      <p>© <span id="year">2026</span> Ismi Tikar. Dibuat oleh grow.loca</p>
+      <a href="#beranda" class="w-fit transition hover:text-moss">Kembali ke atas ↑</a>
+    </div>
+  </footer>
+
+  <button id="backToTop"
+    class="fixed bottom-5 right-5 z-40 grid h-11 w-11 translate-y-3 place-items-center rounded-full bg-ink text-lg text-white opacity-0 shadow-soft transition-all duration-300 pointer-events-none hover:bg-moss hover:scale-110"
+    aria-label="Kembali ke atas">↑</button>
+
+  <script>
+    // Mobile navigation
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuButton.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      menuButton.setAttribute('aria-expanded', String(!isOpen));
+      menuButton.setAttribute('aria-label', isOpen ? 'Buka menu' : 'Tutup menu');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Buka menu');
+    }));
+
+    // --- ENHANCED REVEAL ON SCROLL OBSERVER ---
+    const revealItems = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+      revealItems.forEach(item => observer.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add('visible'));
+    }
+
+    // --- PARALLAX EFFECT ON SCROLL ---
+    const parallaxBg = document.querySelector('.parallax-bg');
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      if (parallaxBg && scrolled < window.innerHeight) {
+        parallaxBg.style.transform = `translateY(${scrolled * 0.25}px) scale(${1 + scrolled * 0.0002})`;
+      }
+    }, { passive: true });
+
+    // Quick-order navigation
+    document.querySelectorAll('.order-product').forEach(button => button.addEventListener('click', () => {
+      document.getElementById('pemesanan').scrollIntoView({ behavior: 'smooth' });
+    }));
+
+    // Scroll progress + back-to-top
+    const progress = document.getElementById('scrollProgress');
+    const backToTop = document.getElementById('backToTop');
+    function updateScrollUI() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = max > 0 ? (window.scrollY / max) * 100 : 0;
+      progress.style.width = percent + '%';
+      const show = window.scrollY > 500;
+      backToTop.classList.toggle('opacity-0', !show);
+      backToTop.classList.toggle('translate-y-3', !show);
+      backToTop.classList.toggle('pointer-events-none', !show);
+    }
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    updateScrollUI();
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>
